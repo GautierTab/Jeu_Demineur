@@ -7,7 +7,7 @@ import jeu as j
 
 grille = g.Grille()
 
-jeu = grille.initialiser()
+# jeu = grille.initialiser()
 jeu = j.jeu()
 jeu.lancement_jeu()
 
