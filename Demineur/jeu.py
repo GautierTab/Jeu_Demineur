@@ -13,11 +13,11 @@ class jeu():
         Cette fonction permet de lancer le jeu.
         L'algo prend en compte les input du joueur, et envoie les informations à grille.py
         """
-        print("================================")
+        print("=====================================================================")
         print("Bienvenu dans le jeu du démineur")
         print("Réalisé par Gautier TABORDET, ING3 - ENSG / Université Gustave Eiffel")
         print("Version 1.0")
-        print("================================")
+        print("=====================================================================")
         self.grille.initialiser()
         print(self.grille)
         while self.jeu_fini == False:
