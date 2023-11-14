@@ -27,11 +27,10 @@ class Grille():
         """
         self.debut = time.time()
         while (self.taille_x==0)&(self.taille_y==0):
-            print("Choisissez une difficultée. 0 : facile, 1: moyen, 2 : difficile, 3 : personnalisé")
-            niveau = input()
+            niveau = input("Choisissez une difficulté : (0) facile, (1) moyen, (2) difficile, (3) personnalisé : ")
 
             if int(niveau) == 3:
-                print('Entrer les dimensions de la grille.')
+                print('Entrer les dimensions de la grille')
                 self.taille_x = int(input('Nombre de lignes : '))
                 self.taille_y = int(input('Nombre de colonnes : '))
                 self.nb_mines = int(self.taille_x*self.taille_y*self.densite_mines)
@@ -66,9 +65,10 @@ class Grille():
             x = random.randint(0, self.taille_x-1)
             y = random.randint(0, self.taille_y-1)
 
-            # Vérifier si les éléments tirés ne sont pas égaux à premier_x et premier_y
-            if (x != premier_x) and (y != premier_y) and not ((premier_x - 1 <= x <= premier_x + 1) and (premier_y - 1 <= y <= premier_y + 1)):
-       
+            # Vérifier si les éléments tirés ne sont pas égaux à premier_x et premier_y, et qu'ils ne sont pas dejà dans la liste
+            # Cette condition empêche de faire des tests sur des petites grilles (2,2) et provoque des problèmes sur une grille (3,3)
+            if (x != premier_x) and (y != premier_y) and not ((premier_x - 1 <= x <= premier_x + 1) and (premier_y - 1 <= y <= premier_y + 1)) and not (x in indices_x and y in indices_y):
+            
                 indices_x.append(x)
                 indices_y.append(y)
 
@@ -104,8 +104,30 @@ class Grille():
 
         return self.grille
     
-
-
+    def nb_case_decouvertes(self):
+        """
+        Cette fonction permet de connaître le nombre de cases qu'il reste à découvrir.
+        :return: (int) : Nombre de case qu'il reste à découvrir sur la grille
+        """
+        k=0
+        for i in range(self.taille_x):
+            for j in range(self.taille_y):
+                if self.grille[i,j].est_decouvert:
+                    k+=1
+        return self.taille_x*self.taille_y - k - self.nb_mines 
+    
+    def nb_case_minees(self):
+        """
+        Cette fonction permet de connaître le nombre de case qu'il reste à marquer sur la grille.
+        :return: (int) : Nombre de case qu'il reste à marquer sur la grille
+        """
+        k=0
+        for i in range(self.taille_x):
+            for j in range(self.taille_y):
+                if self.grille[i,j].est_marquee:
+                    k+=1
+        return self.nb_mines - k
+    
     def attribution_mine(self,case):
         """
         Cette fonction permet de basculer l'attribut self.contient_mine de case.py vers True
@@ -190,8 +212,8 @@ class Grille():
             for elem in ligne:
                 if elem.est_decouvert:
                     ligne_affichee.append(str(elem.valeur)+' ')
-                # if elem.est_marquee:
-                #     ligne_affichee.append('F ')
+                elif not elem.est_decouvert and elem.est_marquee:
+                    ligne_affichee.append('F ')
                 else:
                     ligne_affichee.append('. ')
             result += ' '.join(ligne_affichee)
@@ -236,6 +258,10 @@ class Grille():
             self.jeu_fini = True
             self.fin = time.time()
             duree = self.fin - self.debut
+            for i in range(self.taille_x):
+                for j in range(self.taille_y):
+                    if isinstance(self.grille[i,j],b.Bombe):
+                        self.decouvrir_case(self.grille[i,j])
             print('-------------------------------------------------')
             print('Vous avez perdu !')
             print('Votre score : ', duree)
@@ -253,7 +279,7 @@ class Grille():
             self.nb_case_jouable -=1
             
         # Cas où toutes les cases ont été découvertes
-        if self.nb_case_jouable == 0:
+        if self.nb_case_decouvertes() == 0:
             self.jeu_fini = True
             self.fin = time.time()
             duree = self.fin - self.debut
