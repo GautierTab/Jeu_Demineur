@@ -1,24 +1,14 @@
-import numpy as np
-
-
-# x (int)
-# y (int)
-# contient_mine = False
-# est_decouvert = False
-# est_marquee = False
-
 class Case():
+    """
+    Classe permettant de définir chaque élément de la grille comme étant une case.
+    """
     def __init__(self):
         self.x = 0
         self.y = 0
         self.contient_mine = False
         self.est_decouvert = False
         self.est_marquee = False
-        
-
-    # def initialiser_case(self):
        
-
     def ajoute_mine(self):
         self.contient_mine = True
 
