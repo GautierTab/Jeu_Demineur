@@ -1,8 +1,9 @@
+# Import des bibliothèques
 import numpy as np
 import random
 import time
 
-import jeu as j
+# Import des classes
 import case as c
 import Chiffre as ch
 import Bombe as b

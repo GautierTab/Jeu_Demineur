@@ -1,7 +1,5 @@
+# Import des classes
 import grille as g
-import Bombe as b
-import Chiffre as ch
-import Vide as v
 
 class jeu():
     def __init__(self):

@@ -1,3 +1,4 @@
+# Import des classes
 from case import Case
 
 class Chiffre(Case):
