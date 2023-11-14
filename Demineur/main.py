@@ -2,15 +2,11 @@
 # Lancement central des commandes
 import numpy as np
 
-import grille as g
 import jeu as j
-
-grille = g.Grille()
 
 # jeu = grille.initialiser()
 jeu = j.jeu()
 jeu.lancement_jeu()
-
 
 # for ligne in jeu:
 #     for elem in ligne:
